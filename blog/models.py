@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 class BlogType(models.Model):
     type_name = models.CharField(max_length=15)
 
+    def blog_count(self):
+        return self.blog_set.count()
+
     def __str__(self):
         return self.type_name
 
