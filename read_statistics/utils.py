@@ -54,17 +54,3 @@ def get_yesterday_hot_data(content_type):
         content_type=content_type, date=yesterday
     ).order_by("-read_num")
     return read_details[:7]
-
-
-def get_7_days_hot_data(content_type):
-    today = timezone.now().date()
-    date = today - datetime.timedelta(days=7)
-    read_details = (
-        ReadDetail.objects.filter(
-            content_type=content_type, date__lt=today, date__gte=date
-        )
-        .values("content_type", "object_id")
-        .annotate(read_num_sum=Sum("read_num"))
-        .order_by("-read_num")
-    )
-    return read_details[:7]
