@@ -1,3 +1,5 @@
 .vscode/
 blog/__pycache__/
 myblog/__pycache__/
+comment/__pycache__/
+read_statistics/__pycache__/
