@@ -9,6 +9,8 @@
 {% load staticfiles %}
 {% block header_extends %}
     <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -22,7 +24,7 @@
                     <li>发表日期：{{ blog.created_time|date:"Y-m-d H:i:s" }}</li>
                     <li>阅读({{ blog.get_read_num }})</li>
                 </ul>
-                <div class="blog-content">{{blog.content|safe}}</div>
+                <div class="blog-content">{{ blog.content|safe }}</div>
                 <div class="blog_more">
                     <p>上一篇:
                         {% if previous_blog %}
@@ -47,14 +49,9 @@
                     <h3 class="comment-area-title">提交评论</h3>
                     {% if user.is_authenticated %}
                         <form action="{% url 'update_comment' %}" method="POST" style="overflow: hidden">
+                            <label for="comment_text">{{ user.username }}, 欢迎评论~</label>
                             {% csrf_token %}
-                            <div class="form-group">
-                                <label for="comment_text">{{ user.username }}, 欢迎评论~</label>
-                                <textarea type="comment_text" class="form-control" name="text" rows="4"></textarea>
-                            </div>
-                            
-                            <input type="hidden" name="object_id" value="{{ blog.pk }}">
-                            <input type="hidden" name="content_type" value="blog">
+                            {{ comment_form }}
                             <input type="submit" value="评论" class="btn btn-primary" style="float: right">
                         </form>
                     {% else %}
@@ -70,7 +67,7 @@
                         <div>
                             {{ comment.user.username }}
                             ({{ comment.comment_time|date:"Y-m-d H:i:s" }}):
-                            {{ comment.text }}
+                            {{ comment.text|safe }}
                         </div>
                     {% empty %}
                         暂无评论

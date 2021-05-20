@@ -73,7 +73,7 @@ def register(request):
             #登录用户
             user = auth.authenticate(username=username, password=password)
             auth.login(request, user)
-            return redirect(request.GET.get('from',reverse('home')))
+            return redirect(request.GET.get('from',reverse('home'))) 
     else:
         reg_form = RegForm()
 

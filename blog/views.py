@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import Blog, BlogType
 from read_statistics.utils import read_statistics_once_read
 from comment.models import Comment
+from comment.forms import CommentForm
 
 
 def get_blogs_list_common_data(request, blogs_all_list):
@@ -88,6 +89,10 @@ def blog_detail(request, blog_pk):
     context = {}
     context["blog"] = blog
     context["comments"] = comments
+    data = {}
+    data["content_type"] = blog_content_type.model
+    data["object_id"] = blog_pk
+    context["comment_form"] = CommentForm(initial=data)
     context["next_blog"] = Blog.objects.filter(
         created_time__gt=blog.created_time
     ).last()
