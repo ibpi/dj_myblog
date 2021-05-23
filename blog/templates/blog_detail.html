@@ -7,6 +7,8 @@
 {% block nav_blog_active %}active{% endblock %}
 
 {% load staticfiles %}
+{% load comment_tags %}
+
 {% block header_extends %}
     <link rel="stylesheet" href="{% static 'blog/blog.css' %}">
     <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
@@ -23,6 +25,7 @@
                     <li>分类：<a href="{% url 'blogs_with_type' blog.blog_type.pk %}">{{ blog.blog_type }}</a></li>
                     <li>发表日期：{{ blog.created_time|date:"Y-m-d H:i:s" }}</li>
                     <li>阅读({{ blog.get_read_num }})</li>
+                    <li>评论({% get_comment_count blog %})</li>
                 </ul>
                 <div class="blog-content">{{ blog.content|safe }}</div>
                 <div class="blog_more">
@@ -51,11 +54,11 @@
                         <form id="comment_form" action="{% url 'update_comment' %}" method="POST" style="overflow: hidden">
                             <label>{{ user.username }}, 欢迎评论~</label>
                             <div id="reply_content_container" style="display:none">
-                                <p>回复：</p>
+                                <p id="reply_title">回复：</p>
                                 <div id="reply_content"></div>
                             </div>
                             {% csrf_token %}
-                            {{ comment_form }}
+                            {% get_comment_form blog %}
                             <span id="comment_error" class="text-danger pull=left"></span>
                             <input type="submit" value="评论" class="btn btn-primary pull-right">
                         </form>
@@ -69,6 +72,7 @@
                  <div class="comment-area">
                     <h3 class="comment-area-title">评论列表</h3>
                     <div id="comment_list">
+                        {% get_comment_list blog as comments %}
                         {% for comment in comments %}
                             <div id="root_{{ comment.pk }}" class="comment">
                                 <span>{{ comment.user.username }}</span>
@@ -139,6 +143,7 @@
                         $('#reply_content_container').hide();
                         $('#reply_comment_id').val('0');
                         $('#no_comment').remove();
+                        $("#comment_error").text('评论成功');
                     }else{
                         // 显示错误信息
                         $("#comment_error").text(data['message']);

@@ -1,11 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.core.paginator import Paginator
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from .models import Blog, BlogType
 from read_statistics.utils import read_statistics_once_read
-from comment.models import Comment
-from comment.forms import CommentForm
 
 
 def get_blogs_list_common_data(request, blogs_all_list):
@@ -83,17 +80,9 @@ def blogs_with_date(request, year, month):
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
     read_cookie_key = read_statistics_once_read(request, blog)
-    blog_content_type = ContentType.objects.get_for_model(blog)
-    comments = Comment.objects.filter(content_type=blog_content_type, object_id=blog.pk, parent=None)
 
     context = {}
     context["blog"] = blog
-    context["comments"] = comments.order_by('-comment_time')
-    data = {}
-    data["content_type"] = blog_content_type.model
-    data["object_id"] = blog_pk
-    data['reply_comment_id'] = 0
-    context["comment_form"] = CommentForm(initial=data)
     context["next_blog"] = Blog.objects.filter(
         created_time__gt=blog.created_time
     ).last()
