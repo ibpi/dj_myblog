@@ -181,7 +181,7 @@
             });
         }
         function likeChange(obj, content_type, object_id){
-            var is_liked = obj,getElementByClassName('active').length == 0
+            var is_liked = obj.getElementsByClassName('active').length == 0
             $.ajax({
                 url:"{% url 'like_change' %}",
                 type:'GET',
@@ -195,15 +195,15 @@
                     console.log(data);
                     if(data['status']=='SUCCESS'){
                         // 更新点赞状态
-                        var element = $(obj.getElementByClassName('glyphicon'));
-                        if(is_like){
+                        var element = $(obj.getElementsByClassName('glyphicon'));
+                        if(is_liked){
                             element.addClass('active');
                         }
                         else{
                             element.removeClass('active');
                         }
                         // 更新点赞数量
-                        var liked_num = $(obj.getElementByClassName('liked_num'));
+                        var liked_num = $(obj.getElementsByClassName('liked-num'));
                         liked_num.text(data['liked_num']);
                     }else{
                         alert(data['message']);
