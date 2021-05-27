@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import myblog
 from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
@@ -25,6 +26,7 @@ urlpatterns = [
     path('ckeditor',include('ckeditor_uploader.urls')),
     path('blog/', include('blog.urls')),
     path('login/',views.login, name='login'),
+    path('login_for_modal/',views.login_for_modal, name='login_for_modal'),
     path('register/', views.register, name='register'),
     path('comment/', include('comment.urls')),
     path('likes/', include('likes.urls')),

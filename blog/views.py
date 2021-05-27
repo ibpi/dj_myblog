@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 from .models import Blog, BlogType
 from read_statistics.utils import read_statistics_once_read
+from myblog.forms import LoginForm
 
 
 def get_blogs_list_common_data(request, blogs_all_list):
@@ -89,6 +90,7 @@ def blog_detail(request, blog_pk):
     context["previous_blog"] = Blog.objects.filter(
         created_time__lt=blog.created_time
     ).first()
+    context["login_form"] = LoginForm()
     response = render(request,"blog_detail.html", context)  # 响应
     response.set_cookie(read_cookie_key, "true")# 阅读cookie标记
     return response
