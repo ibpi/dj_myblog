@@ -168,3 +168,12 @@ CACHES = {
         'LOCATION': 'my_cache_table',
     }
 }
+
+# 发送邮件设置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = '1045579531@qq.com'
+EMAIL_HOST_PASSWORD = 'mkeojbichwxkbejf'
+EMAIL_SUBJECT_PREFIX = '{WJK的博客}'
+EMAIL_USE_TLS = True
